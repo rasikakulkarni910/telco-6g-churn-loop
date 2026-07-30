@@ -83,46 +83,9 @@ flowchart LR
 | **Act** | What do we do? | Playbook + digital/outbound |
 | **Prove** | Did it beat control? | Uplift by segment × playbook |
 
-Exit when `churned` or `stabilized`. Enter only 6G migrants with risk ≥ 0.60 and a strong driver.
+**Loop rules:** enter only 6G migrants with risk ≥ 0.60 and a strong driver (`|SHAP| ≥ 0.25`). Exit when `churned` or `stabilized`; skip the cycle if still `active` but entry fails.
 
-```text
-BigQuery features  →  XGBoost + SHAP  →  Signal → Decision → Outreach → Learning  →  FastAPI + Streamlit (Cloud Run)
-```
-
-<details>
-<summary>Stack detail (optional)</summary>
-
-```mermaid
-flowchart TB
-  subgraph Data["Data - BigQuery"]
-    RAW["raw_customers"] --> FEAT["features + target_churn_90d"]
-  end
-  subgraph Risk["Risk engine"]
-    XGB["XGBoost predict_proba"] --> SHAP["SHAP drivers"]
-  end
-  subgraph Loop["Agents"]
-    SIG["Signal"] --> DEC["Decision"] --> OUT["Outreach"] --> LRN["Learning"]
-  end
-  subgraph Ship["Cloud Run"]
-    API["FastAPI"] --> UI["Control Center"]
-  end
-  FEAT --> XGB
-  SHAP --> SIG
-  LRN --> API
-  FEAT -.-> API
-```
-
-**Signal entry (all required):** `migration_flag = 1` · `risk ≥ 0.60` · ≥1 strong driver (`|SHAP| ≥ 0.25`)
-
-</details>
-
-**Loop exit conditions**
-
-| Status | What happens |
-|---|---|
-| `churned` | Do not re-enter |
-| `stabilized` | Do not re-enter (successful rescue) |
-| `active` + entry rules fail | Skipped this cycle |
+**Stack:** BigQuery features → XGBoost + SHAP → Signal → Decision → Outreach → Learning → FastAPI + Streamlit on Cloud Run
 ---
 
 ## Driver → playbook map
