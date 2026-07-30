@@ -1,0 +1,20 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - $_IMAGE
+      - -f
+      - Dockerfile.streamlit
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - $_IMAGE
+images:
+  - $_IMAGE
+substitutions:
+  _IMAGE: us-central1-docker.pkg.dev/project-5506c1fb-580d-4ca3-b04/cloud-run-source-deploy/telco-6g-churn-ui:latest
+timeout: 1800s
+options:
+  logging: CLOUD_LOGGING_ONLY

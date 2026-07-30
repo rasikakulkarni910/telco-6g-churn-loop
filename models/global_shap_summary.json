@@ -1,0 +1,166 @@
+{
+  "features": [
+    {
+      "feature": "Contract_Month-to-month",
+      "mean_abs_shap": 1.4102509021759033,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "tenure",
+      "mean_abs_shap": 0.7995668053627014,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "post_migration_qos",
+      "mean_abs_shap": 0.7341002821922302,
+      "driver_category": "network"
+    },
+    {
+      "feature": "migration_date_offset_days",
+      "mean_abs_shap": 0.595145046710968,
+      "driver_category": "migration"
+    },
+    {
+      "feature": "usage_change_30d",
+      "mean_abs_shap": 0.5448872447013855,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "bill_change_pct",
+      "mean_abs_shap": 0.4170384109020233,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "migration_flag",
+      "mean_abs_shap": 0.3528255522251129,
+      "driver_category": "migration"
+    },
+    {
+      "feature": "TotalCharges",
+      "mean_abs_shap": 0.3482068181037903,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "support_sentiment",
+      "mean_abs_shap": 0.33048662543296814,
+      "driver_category": "support"
+    },
+    {
+      "feature": "Contract_Two year",
+      "mean_abs_shap": 0.31891149282455444,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "MonthlyCharges",
+      "mean_abs_shap": 0.28869837522506714,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "Partner_Yes",
+      "mean_abs_shap": 0.22973325848579407,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "InternetService_No",
+      "mean_abs_shap": 0.17149733006954193,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "PaperlessBilling_Yes",
+      "mean_abs_shap": 0.15374763309955597,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "PaymentMethod_Electronic check",
+      "mean_abs_shap": 0.11013788729906082,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "OnlineSecurity_Yes",
+      "mean_abs_shap": 0.10276948660612106,
+      "driver_category": "support"
+    },
+    {
+      "feature": "TechSupport_Yes",
+      "mean_abs_shap": 0.08006316423416138,
+      "driver_category": "support"
+    },
+    {
+      "feature": "InternetService_DSL",
+      "mean_abs_shap": 0.06477093696594238,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "InternetService_Fiber optic",
+      "mean_abs_shap": 0.06358291208744049,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "PaymentMethod_Credit card (automatic)",
+      "mean_abs_shap": 0.060857441276311874,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "Dependents_Yes",
+      "mean_abs_shap": 0.051916420459747314,
+      "driver_category": "usage"
+    },
+    {
+      "feature": "PaymentMethod_Bank transfer (automatic)",
+      "mean_abs_shap": 0.03840792924165726,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "Contract_One year",
+      "mean_abs_shap": 0.03742246329784393,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "SeniorCitizen",
+      "mean_abs_shap": 0.036216143518686295,
+      "driver_category": "migration"
+    },
+    {
+      "feature": "value_segment_Medium",
+      "mean_abs_shap": 0.025951996445655823,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "PaymentMethod_Mailed check",
+      "mean_abs_shap": 0.011281772516667843,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "value_segment_High",
+      "mean_abs_shap": 0.0003532315313350409,
+      "driver_category": "billing"
+    },
+    {
+      "feature": "value_segment_Low",
+      "mean_abs_shap": 0.0,
+      "driver_category": "billing"
+    }
+  ],
+  "categories": [
+    {
+      "driver_category": "billing",
+      "mean_abs_shap": 3.221266353939427
+    },
+    {
+      "driver_category": "usage",
+      "mean_abs_shap": 1.925954908132553
+    },
+    {
+      "driver_category": "migration",
+      "mean_abs_shap": 0.9841867424547672
+    },
+    {
+      "driver_category": "network",
+      "mean_abs_shap": 0.7341002821922302
+    },
+    {
+      "driver_category": "support",
+      "mean_abs_shap": 0.5133192762732506
+    }
+  ]
+}

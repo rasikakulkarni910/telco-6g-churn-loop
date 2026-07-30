@@ -1,0 +1,17 @@
+.venv
+venv
+.git
+.gitignore
+.gcloudignore
+__pycache__
+**/__pycache__
+*.pyc
+.env
+.env.*
+notebooks
+data/telco_churn.csv
+.cursor
+canvases
+*.md
+.DS_Store
+.ipynb_checkpoints
