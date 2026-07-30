@@ -59,13 +59,18 @@ That’s the product.
 
 **Predict who leaves. Fix why. Prove it worked.**
 
+```text
+   SCORE  →  EXPLAIN  →  ACT  →  PROVE
+     ↑                              │
+     └──────── still at risk ───────┘
+```
+
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px' }}}%%
 flowchart LR
-  S["① SCORE<br/>P(churn in 90d)"]
-  E["② EXPLAIN<br/>bill · QoS · usage · VIP"]
-  A["③ ACT<br/>playbook + channel"]
-  P["④ PROVE<br/>treated vs control"]
+  S["1 SCORE<br/>P churn in 90d"]
+  E["2 EXPLAIN<br/>bill / QoS / usage / VIP"]
+  A["3 ACT<br/>playbook + channel"]
+  P["4 PROVE<br/>treated vs control"]
 
   S --> E --> A --> P
   P -.->|still at risk| S
@@ -89,7 +94,7 @@ BigQuery features  →  XGBoost + SHAP  →  Signal → Decision → Outreach �
 
 ```mermaid
 flowchart TB
-  subgraph Data["Data · BigQuery"]
+  subgraph Data["Data - BigQuery"]
     RAW["raw_customers"] --> FEAT["features + target_churn_90d"]
   end
   subgraph Risk["Risk engine"]
