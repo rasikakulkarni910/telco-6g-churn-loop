@@ -12,14 +12,14 @@ Not a notebook demo. A runnable system — model → agents → API → executiv
 
 **Predict who leaves. Fix why. Prove it worked.**
 
-![SCORE → EXPLAIN → ACT → PROVE closed loop](docs/architecture.png)
+![SCORE → EXPLAIN → ACT → PROVE agent loop](docs/architecture-loop.gif)
 
-| Step | Question | Output |
-|---|---|---|
-| **Score** | Who leaves in 90 days? | `P(churn)` from XGBoost |
-| **Explain** | Why — bill, network, usage, VIP? | SHAP drivers |
-| **Act** | What do we do? | Playbook + digital/outbound |
-| **Prove** | Did it beat control? | Uplift by segment × playbook |
+| Step | Agent | Question | Output |
+|---|---|---|---|
+| **Score** | Signal | Who leaves in 90 days? | `P(churn)` from XGBoost |
+| **Explain** | Decision | Why — bill, network, usage, VIP? | SHAP drivers → playbook |
+| **Act** | Outreach | What do we do? | Message + digital/outbound |
+| **Prove** | Learning | Did it beat control? | Uplift by segment × playbook |
 
 Enter only 6G migrants with risk ≥ 0.60 and a strong driver. Exit when `churned` or `stabilized`.
 
