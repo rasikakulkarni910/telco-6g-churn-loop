@@ -19,7 +19,7 @@ Not a notebook demo. A runnable system — model → agents → API → executiv
 | **API docs** | https://telco-6g-churn-loop-454334461204.us-central1.run.app/docs |
 | **Source** | https://github.com/rasikakulkarni910/telco-6g-churn-loop |
 
-Open the UI → **Run full loop** in the sidebar → inspect numeric risk scores (e.g. `0.78`), playbooks, and treated vs control uplift.
+Open the UI → pick **CEO / CFO / CPO** → **Run loop** → read headline KPIs, trends, and exceptions on one screen (no explorer clutter).
 
 ---
 
@@ -57,39 +57,59 @@ That’s the product.
 
 ## System architecture
 
+**Predict who leaves. Fix why. Prove it worked.**
+
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px' }}}%%
 flowchart LR
-  subgraph Data["Google BigQuery"]
-    RAW["raw_customers"]
-    FEAT["features<br/>+ target_churn_90d"]
-  end
+  S["① SCORE<br/>P(churn in 90d)"]
+  E["② EXPLAIN<br/>bill · QoS · usage · VIP"]
+  A["③ ACT<br/>playbook + channel"]
+  P["④ PROVE<br/>treated vs control"]
 
-  subgraph Model["Risk engine"]
-    XGB["XGBoost<br/>predict_proba"]
-    SHAP["SHAP / pred_contribs<br/>drivers by category"]
-  end
-
-  subgraph Loop["Agentic churn loop"]
-    S["Signal<br/>entry / exit"]
-    D["Decision<br/>segment · playbook · intensity"]
-    O["Outreach<br/>message / channel"]
-    L["Learning<br/>treated vs control"]
-  end
-
-  subgraph Surfaces["Delivery"]
-    API["FastAPI<br/>Cloud Run"]
-    UI["Streamlit<br/>Control Center"]
-  end
-
-  RAW --> FEAT
-  FEAT --> XGB
-  XGB --> SHAP
-  SHAP --> S
-  S --> D --> O --> L
-  S & D & O & L --> API
-  API --> UI
-  FEAT --> API
+  S --> E --> A --> P
+  P -.->|still at risk| S
 ```
+
+| | Question answered | Output |
+|---|---|---|
+| **Score** | Who leaves in 90 days? | Risk probability (not a traffic-light badge) |
+| **Explain** | Why — bill, network, usage, VIP? | SHAP drivers → category |
+| **Act** | What do we do? | Playbook + digital/outbound |
+| **Prove** | Did it beat control? | Uplift by segment × playbook |
+
+Exit when `churned` or `stabilized`. Enter only 6G migrants with risk ≥ 0.60 and a strong driver.
+
+```text
+BigQuery features  →  XGBoost + SHAP  →  Signal → Decision → Outreach → Learning  →  FastAPI + Streamlit (Cloud Run)
+```
+
+<details>
+<summary>Stack detail (optional)</summary>
+
+```mermaid
+flowchart TB
+  subgraph Data["Data · BigQuery"]
+    RAW["raw_customers"] --> FEAT["features + target_churn_90d"]
+  end
+  subgraph Risk["Risk engine"]
+    XGB["XGBoost predict_proba"] --> SHAP["SHAP drivers"]
+  end
+  subgraph Loop["Agents"]
+    SIG["Signal"] --> DEC["Decision"] --> OUT["Outreach"] --> LRN["Learning"]
+  end
+  subgraph Ship["Cloud Run"]
+    API["FastAPI"] --> UI["Control Center"]
+  end
+  FEAT --> XGB
+  SHAP --> SIG
+  LRN --> API
+  FEAT -.-> API
+```
+
+**Signal entry (all required):** `migration_flag = 1` · `risk ≥ 0.60` · ≥1 strong driver (`|SHAP| ≥ 0.25`)
+
+</details>
 
 **Loop exit conditions**
 
@@ -98,9 +118,6 @@ flowchart LR
 | `churned` | Do not re-enter |
 | `stabilized` | Do not re-enter (successful rescue) |
 | `active` + entry rules fail | Skipped this cycle |
-
-**Signal entry (all required):** `migration_flag = 1` · `risk ≥ 0.60` · ≥1 strong driver (`|SHAP| ≥ 0.25`)
-
 ---
 
 ## Driver → playbook map
@@ -167,16 +184,32 @@ v1 outcomes are simulated from risk + playbook priors — the plumbing is produc
 
 ---
 
-## Repo map
+## Repo overview
+
+It looks like a lot of files. Mentally it’s **four layers + deploy glue**:
+
+```text
+BigQuery data  →  Model (risk + drivers)  →  Agents (loop)  →  App (API + UI)
+```
+
+| Folder | Job | Files that matter |
+|---|---|---|
+| `data/` | Land raw Telco data in BQ + build landmark `features` | `download_*.py`, `load_raw_to_bigquery.py`, `features_builder.py` |
+| `models/` | Train XGBoost + serve `risk` / SHAP drivers | `train_churn_model.py`, `churn_model_service.py`, `churn_model.json` |
+| `agents/` | Signal → Decision → Outreach → Learning | one module per agent + `run_loop_demo.py` |
+| `app/` | Product surfaces | `api.py` (FastAPI), `ui.py` (Streamlit) |
+| root | Ship it | `main.py`, `Dockerfile*`, `requirements*.txt`, `README.md` |
+
+Everything else is support: configs (`.gitignore`, env examples), model artifacts (`metrics.json`, SHAP summary), one notebook, Cloud Build for the UI. Not a separate product — just what you need to train, explain, loop, and deploy.
 
 ```text
 telco_6g_churn_loop/
-├── data/        # download, BigQuery load, landmark feature builder
-├── models/      # train + predict_risk_and_drivers()
-├── agents/      # Signal / Decision / Outreach / Learning
-├── app/         # FastAPI (api.py) + Streamlit (ui.py)
-├── notebooks/   # EDA + train notebook
-└── main.py      # Cloud Run entrypoint
+├── data/           # BQ ingest + features
+├── models/         # XGBoost risk engine
+├── agents/         # churn intervention loop
+├── app/            # FastAPI + Streamlit
+├── notebooks/      # optional EDA
+└── main.py         # Cloud Run entry
 ```
 
 ---
