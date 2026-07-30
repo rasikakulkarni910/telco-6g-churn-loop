@@ -12,7 +12,7 @@ Not a notebook demo. A runnable system — model → agents → API → executiv
 
 **Predict who leaves. Fix why. Prove it worked.**
 
-![SCORE → EXPLAIN → ACT → PROVE closed loop](docs/architecture.svg)
+![SCORE → EXPLAIN → ACT → PROVE closed loop](docs/architecture.png)
 
 | Step | Question | Output |
 |---|---|---|
