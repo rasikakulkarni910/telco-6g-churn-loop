@@ -10,9 +10,7 @@ Not a notebook demo. A runnable system — model → agents → API → executiv
 
 ## Architecture (5-second version)
 
-**Predict who leaves. Fix why. Prove it worked.**
-
-![SCORE → EXPLAIN → ACT → PROVE agent loop](docs/architecture-loop.gif)
+![Loop-engineered 6G churn mitigation](docs/architecture-loop.gif)
 
 | Step | Agent | Question | Output |
 |---|---|---|---|
