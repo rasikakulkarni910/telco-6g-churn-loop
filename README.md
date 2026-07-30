@@ -8,6 +8,21 @@ This project is an end-to-end **churn control center**: predict who will leave i
 
 Not a notebook demo. A runnable system — model → agents → API → executive UI → live on Cloud Run.
 
+## Architecture (5-second version)
+
+**Predict who leaves. Fix why. Prove it worked.**
+
+![SCORE → EXPLAIN → ACT → PROVE closed loop](docs/architecture.svg)
+
+| Step | Question | Output |
+|---|---|---|
+| **Score** | Who leaves in 90 days? | `P(churn)` from XGBoost |
+| **Explain** | Why — bill, network, usage, VIP? | SHAP drivers |
+| **Act** | What do we do? | Playbook + digital/outbound |
+| **Prove** | Did it beat control? | Uplift by segment × playbook |
+
+Enter only 6G migrants with risk ≥ 0.60 and a strong driver. Exit when `churned` or `stabilized`.
+
 ---
 
 ## Live demos
@@ -53,39 +68,6 @@ That’s the product.
 6. **Learns** via treated/control assignment and simulated outcomes → uplift by segment × playbook.
 7. **Exposes** the loop over FastAPI and a Streamlit control tower for execs and PMs.
 
----
-
-## System architecture
-
-**Predict who leaves. Fix why. Prove it worked.**
-
-```text
-   SCORE  →  EXPLAIN  →  ACT  →  PROVE
-     ↑                              │
-     └──────── still at risk ───────┘
-```
-
-```mermaid
-flowchart LR
-  S["1 SCORE<br/>P churn in 90d"]
-  E["2 EXPLAIN<br/>bill / QoS / usage / VIP"]
-  A["3 ACT<br/>playbook + channel"]
-  P["4 PROVE<br/>treated vs control"]
-
-  S --> E --> A --> P
-  P -.->|still at risk| S
-```
-
-| | Question answered | Output |
-|---|---|---|
-| **Score** | Who leaves in 90 days? | Risk probability (not a traffic-light badge) |
-| **Explain** | Why — bill, network, usage, VIP? | SHAP drivers → category |
-| **Act** | What do we do? | Playbook + digital/outbound |
-| **Prove** | Did it beat control? | Uplift by segment × playbook |
-
-**Loop rules:** enter only 6G migrants with risk ≥ 0.60 and a strong driver (`|SHAP| ≥ 0.25`). Exit when `churned` or `stabilized`; skip the cycle if still `active` but entry fails.
-
-**Stack:** BigQuery features → XGBoost + SHAP → Signal → Decision → Outreach → Learning → FastAPI + Streamlit on Cloud Run
 ---
 
 ## Driver → playbook map
